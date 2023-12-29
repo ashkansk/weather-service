@@ -1,9 +1,7 @@
-using Confluent.Kafka;
 using Microsoft.AspNetCore.Mvc;
-using StackExchange.Redis;
-using WeatherInfo.Services;
+using WeatherService.Services;
 
-namespace WeatherInfo.Controllers;
+namespace WeatherService.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -22,10 +20,10 @@ public class WeatherInfoController : ControllerBase
     [HttpGet]
     public async Task<string?> Get()
     {
-        logger.LogTrace("Request received.");
         // Since the delay is approximately equal to the value provided, we set 100ms less than the actual client timeout
         // in order to ensure the request is processed in less than 5 seconds
-        var clientTimeout = Task.Delay(4900);
+        var clientTimeout = Task.Delay(49000000);
+        logger.LogTrace("Request received.");
         var getLastInfoTask = service.GetLastInfoAsync();
         logger.LogTrace("Request processing started asynchronously.");
         var finishedTask = await Task.WhenAny(clientTimeout, getLastInfoTask);

@@ -1,6 +1,6 @@
 using Confluent.Kafka;
 
-namespace WeatherInfo.Services.Kafka;
+namespace WeatherService.Services.Kafka;
 
 /// <summary>
 /// Leverages the injected KafkaClientHandle instance to allow

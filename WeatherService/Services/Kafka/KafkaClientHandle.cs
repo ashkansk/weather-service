@@ -1,6 +1,6 @@
 using Confluent.Kafka;
 
-namespace WeatherInfo.Services.Kafka;
+namespace WeatherService.Services.Kafka;
 
 /// <summary>
 /// Wraps a Confluent.Kafka.IProducer instance, and allows for basic

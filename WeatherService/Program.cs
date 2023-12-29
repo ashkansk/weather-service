@@ -1,9 +1,11 @@
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
-using WeatherInfo;
-using WeatherInfo.Services;
-using WeatherInfo.Services.Kafka;
+using WeatherService;
+using WeatherService.Data;
+using WeatherService.Services;
+using WeatherService.Services.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,8 @@ services.AddControllers(options =>
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
+services.AddDbContext<WeatherDb>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Add connection multiplexer as singleton as mentioned in the docs
 services.AddSingleton<IConnectionMultiplexer>(provider =>
     {
@@ -25,8 +29,8 @@ services.AddSingleton<IConnectionMultiplexer>(provider =>
         return ConnectionMultiplexer.Connect(ConfigurationOptions.Parse(redisOptions));
     }
 );
-// Add IDatabase as scoped (single threaded, bound to a request)
-services.AddScoped<IDatabase>(provider =>
+// Add IDatabase as singleton which is also thread-safe
+services.AddSingleton<IDatabase>(provider =>
 {
     var redis = provider.GetService<IConnectionMultiplexer>();
     return redis!.GetDatabase();
@@ -35,7 +39,7 @@ services.AddScoped<IDatabase>(provider =>
 services.AddSingleton<KafkaClientHandle>();
 services.AddSingleton<KafkaDependentProducer<Null, string>>();
 
-services.AddSingleton<WeatherInfoService>();
+services.AddScoped<WeatherInfoService>();
 
 var app = builder.Build();
 

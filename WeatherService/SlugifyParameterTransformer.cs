@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace WeatherInfo;
+namespace WeatherService;
 
 public class SlugifyParameterTransformer : IOutboundParameterTransformer
 {
