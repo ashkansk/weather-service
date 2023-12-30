@@ -22,7 +22,7 @@ public class WeatherInfoController : ControllerBase
     {
         // Since the delay is approximately equal to the value provided, we set 100ms less than the actual client timeout
         // in order to ensure the request is processed in less than 5 seconds
-        var clientTimeout = Task.Delay(49000000);
+        var clientTimeout = Task.Delay(4900);
         logger.LogTrace("Request received.");
         var getLastInfoTask = service.GetLastInfoAsync();
         logger.LogTrace("Request processing started asynchronously.");
